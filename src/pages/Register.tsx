@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAxiosWithoutToken } from '../axios/AxiosObj';
+import { getUserRegister } from '../redux/userSlice';
+import { useDispatch } from 'react-redux';
 
 export default function Register() {
+    const dispatch: any = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
     });
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
     // Handle input changes
     const handleChange = (e: any) => {
@@ -19,38 +22,23 @@ export default function Register() {
         });
     };
 
-    // Handle form submission
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrorMessage(''); // Clear any previous error messages
-
         try {
-            const config: any = {
-                method: 'POST',
-                url: '/api/auth/register', // Your register API endpoint
-                data: {
-                    fname: formData.username,  // Mapping form fields to API fields
-                    lname: '',                 // Add this if your API requires it
-                    email: formData.email,
-                    password: formData.password,
-                    number: '1234567890',      // Add a placeholder number if required
-                },
-            };
-
-            // Make API call
-            const response: any = await getAxiosWithoutToken(config);
-
-            // Check if registration is successful
-            if (response.success) {
-                alert('Registration successful! Redirecting to dashboard...');
-                navigate('/'); // Redirect to the dashboard after successful registration
-            } else {
-                setErrorMessage(response.message || 'Registration failed');
-            }
+          // Dispatch register action and wait for it to complete
+          await dispatch(getUserRegister({
+            email: formData.email,
+            username: formData.username,
+            password: formData.password
+          })).unwrap(); // Unwrap the action payload or throw an error
+    
+          // Navigate to the root path after successful registration
+          navigate('/');
         } catch (error) {
-            setErrorMessage('An error occurred during registration. Please try again.');
+          console.error('Registration failed:', error);
+          // Handle error (e.g., show error message to user)
         }
-    };
+      };
 
     return (
         <section className="auth d-flex">

@@ -3,10 +3,18 @@ import { useSelector } from 'react-redux';
 import Dashboard from '../pages/Dashboard';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import store from '../redux/store';
+import { initializeUserAsync } from '../redux/userSlice';
+import { useEffect } from 'react';
 
 function AppRoutes() {
     // Get the login state from Redux
     const { isLoggedIn } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        store.dispatch(initializeUserAsync());
+    }, []);
+
 
     return (
         <Router>

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import SecureStorage from 'react-secure-storage';
-import { getAxiosWithToken, getAxiosWithoutToken } from '../axios/AxiosObj';
+import { getAxiosWithoutToken } from '../axios/AxiosObj';
 
 // Define initial state type
 interface UserState {
@@ -8,8 +8,8 @@ interface UserState {
   loading: boolean;
   isLoggedIn: boolean;
   error: string | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: string | null | any;
+  refreshToken: string | null | any;
 }
 
 // Initial state
@@ -23,15 +23,16 @@ const initialState: UserState = {
 };
 
 // Initialize secure storage
-const storage = SecureStorage;  // Use the default exported instance
+const storage = SecureStorage; // Use default exported instance
 
+// Async thunk for initializing user from secure storage
 export const initializeUserAsync = createAsyncThunk('user/initializeUserAsync', async () => {
   try {
     const isLoggedInStr = await storage.getItem('isLoggedIn');
-    const isLoggedIn = isLoggedInStr === 'true'; // Ensure comparison with a string
+    const isLoggedIn = isLoggedInStr === 'true';
 
-    const userDetailsStr = await storage.getItem('userDetails');
-    const userDetails = userDetailsStr ? userDetailsStr : {}; // Handle null or undefined
+    const userDetailsStr: any = await storage.getItem('userDetails');
+    const userDetails: any = userDetailsStr ? JSON.parse(userDetailsStr) : {}; // Parse user details from storage
 
     const accessToken = await storage.getItem('accessToken') || null;
     const refreshToken = await storage.getItem('refreshToken') || null;
@@ -43,69 +44,80 @@ export const initializeUserAsync = createAsyncThunk('user/initializeUserAsync', 
   }
 });
 
+// Async thunk for user login
 export const getLoginUser = createAsyncThunk(
   'user/getLoginUser',
-  async ({ username, password }: { username: string; password: string }, { rejectWithValue }) => {
+  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      const formData = { GST_No: username, password };
+      const formData = { email, password };
       const response = await getAxiosWithoutToken({
         method: 'POST',
-        url: 'vendor/login/',
+        url: 'auth/login/', // Replace with your login API endpoint
         data: formData,
       });
 
-      const { access, refresh } = response.data;
+      const { access, refresh, user } = response.data;
       await storage.setItem('isLoggedIn', 'true');
       await storage.setItem('accessToken', access);
       await storage.setItem('refreshToken', refresh);
+      await storage.setItem('userDetails', JSON.stringify(user)); // Save user details
 
-      return response.data;
+      return { access, refresh, user }; // Return the user details along with tokens
     } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'Unknown error');
+      return rejectWithValue(error.response?.data || 'Login failed. Please try again.');
     }
   }
 );
 
-export const getUserDetails = createAsyncThunk(
-  'user/getUserDetails',
-  async (_, { rejectWithValue }) => {
+// Async thunk for user registration
+export const getUserRegister = createAsyncThunk(
+  'user/getUserRegister',
+  async ({ email, username, password }: { email: string; username: string; password: string }, { rejectWithValue }) => {
     try {
-      const response = await getAxiosWithToken({
-        method: 'GET',
-        url: 'vendor/VendorProfile/',
+      const formData = { email, username, password, fname: "Demo", lname: "Account", number: "9876543210" };
+      const response = await getAxiosWithoutToken({
+        method: 'POST',
+        url: 'auth/register/', // Replace with your registration API endpoint
+        data: formData,
       });
 
-      await storage.setItem('userDetails', JSON.stringify(response.data));
-      return response.data;
+      const { access, refresh, user } = response.data;
+      if (access && refresh) {
+        await storage.setItem('accessToken', access);
+        await storage.setItem('refreshToken', refresh);
+        await storage.setItem('userDetails', JSON.stringify(user)); // Store user details
+      }
+
+      return { access, refresh, user }; // Return the user details along with tokens
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data || 'Registration failed. Please try again.');
     }
   }
 );
 
-export const getLogoutUser = createAsyncThunk(
-  'user/getLogoutUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      await storage.clear();
-      return true;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
+// Async thunk for user logout
+export const getLogoutUser = createAsyncThunk('user/getLogoutUser', async (_, { rejectWithValue }) => {
+  try {
+    await storage.clear(); // Clear all secure storage items
+    return true;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
   }
-);
+});
 
+// User slice
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Handling user initialization
       .addCase(initializeUserAsync.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(initializeUserAsync.fulfilled, (state, action: any) => {
+      .addCase(initializeUserAsync.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.isLoggedIn;
         state.userDetails = action.payload.userDetails;
         state.accessToken = action.payload.accessToken;
@@ -117,6 +129,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Failed to initialize user data';
       })
+      // Handling user login
       .addCase(getLoginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -126,25 +139,31 @@ const userSlice = createSlice({
         state.isLoggedIn = true;
         state.accessToken = action.payload.access;
         state.refreshToken = action.payload.refresh;
+        state.userDetails = action.payload.user;
         state.error = null;
       })
       .addCase(getLoginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(getUserDetails.pending, (state) => {
+      // Handling user registration
+      .addCase(getUserRegister.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getUserDetails.fulfilled, (state, action) => {
+      .addCase(getUserRegister.fulfilled, (state, action) => {
         state.loading = false;
-        state.userDetails = action.payload;
+        state.userDetails = action.payload.user;
+        state.accessToken = action.payload.access;
+        state.refreshToken = action.payload.refresh;
+        state.isLoggedIn = true;
         state.error = null;
       })
-      .addCase(getUserDetails.rejected, (state, action) => {
+      .addCase(getUserRegister.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
+      // Handling user logout
       .addCase(getLogoutUser.fulfilled, (state) => {
         state.isLoggedIn = false;
         state.userDetails = {};
@@ -158,6 +177,7 @@ const userSlice = createSlice({
   },
 });
 
+// Selector to access user state
 export const selectUser = (state: { user: UserState }) => state.user;
 
 export default userSlice.reducer;

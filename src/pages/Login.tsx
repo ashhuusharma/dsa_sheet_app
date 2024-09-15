@@ -1,14 +1,17 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAxiosWithoutToken } from '../axios/AxiosObj';
+import { getLoginUser } from '../redux/userSlice';
 
 export default function Login() {
+    const dispatch: any = useDispatch();
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
     const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
 
     // Handle input changes
     const handleChange = (e: any) => {
@@ -19,32 +22,20 @@ export default function Login() {
     };
 
     // Handle form submission
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setErrorMessage(''); // Clear any previous error messages
-
         try {
-            const config: any = {
-                method: 'POST',
-                url: '/api/auth/login', // Your login API endpoint
-                data: {
-                    email: formData.email,
-                    password: formData.password,
-                },
-            };
+            // Dispatch login action and wait for it to complete
+            await dispatch(getLoginUser({
+                email: formData.email,
+                password: formData.password
+            })).unwrap(); // Unwrap the action payload or throw an error
 
-            // Make API call
-            const response: any = await getAxiosWithoutToken(config);
-
-            // Check if login is successful
-            if (response.success) {
-                alert('Login successful! Redirecting to dashboard...');
-                navigate('/'); // Redirect to the dashboard after successful login
-            } else {
-                setErrorMessage(response.message || 'Login failed. Please check your credentials.');
-            }
+            // Navigate to the root path after successful login
+            navigate('/');
         } catch (error) {
-            setErrorMessage('An error occurred during login. Please try again.');
+            console.error('Login failed:', error);
+            // Handle error (e.g., show error message to user)
         }
     };
 
