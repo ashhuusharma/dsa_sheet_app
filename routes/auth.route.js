@@ -7,6 +7,6 @@ const auth = require('../controllers/auth.controller');
 router.post('/login', auth.loginUser);
 
 // Route to get all courses
-router.get('/register', auth.registerUser);
+router.post('/register', auth.registerUser);
 
 module.exports = router;

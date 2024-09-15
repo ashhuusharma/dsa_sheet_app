@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const ProblemSchema = new mongoose.Schema({
     problemId: { type: String, required: true, unique: true },
+    subtopicId: { type: String, required: true },
     title: { type: String, required: true },
     article: { type: String },
     youtube: { type: String },

@@ -29,14 +29,14 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await generatePassword(password);
 
         // Create and save the User
-        const user = new User({ username, email, password: hashedPassword });
+        const user = new User({ username, email, password: hashedPassword, role: 1 });
         await user.save();
 
         // Create and save the UserDetails
         const userDetails = new UserDetails({ username, fname, lname, number });
         await userDetails.save();
 
-        return res.status(201).json({ success: true, message: 'User registered successfully', username });
+        return res.status(201).json({ success: true, message: 'User registered successfully', user: { user, ...userDetails } });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: 'Server error' });
@@ -59,20 +59,14 @@ exports.loginUser = async (req, res) => {
         if (!user) {
             return res.status(400).json({ success: false, message: 'User not found' });
         }
-
         // Verify password using the helper function
         const isMatch = await verifyPassword(password, user.password);
-        
+
         if (!isMatch) {
             return res.status(400).json({ success: false, message: 'Invalid credentials' });
         }
 
-        // Generate a JWT token with user details
-        const token = jwt.sign({ username: user.username, email: user.email, role: user.role }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
-
-        return res.status(200).json({ success: true, token });
+        return res.status(200).json({ success: true, user });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: 'Server error' });

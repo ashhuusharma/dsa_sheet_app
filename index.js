@@ -66,9 +66,9 @@ app.get("/", async (req, res) => {
 });
 
 // Course Routes: Handle all course-related API requests
-app.use('/api/courses', courseRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/course', courseRoutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 
 // ------------------- Start Server -------------------

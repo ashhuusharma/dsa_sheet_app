@@ -7,6 +7,9 @@ const course = require('../controllers/course.controller');
 router.post('/add', course.addCourse);
 
 // Route to get all courses
-router.get('/', course.getCourses);
+router.get('/get', course.getCourses);
+router.get('/:slug', course.getCourseBySlug);
+
+router.get('/add/topic', course.createTopic);
 
 module.exports = router;
