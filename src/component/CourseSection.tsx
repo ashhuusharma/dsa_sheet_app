@@ -43,7 +43,7 @@ const courses = [
 
 const CourseSection: React.FC = () => {
   return (
-    <div className="card !bg-[#1F1F1F] !border !border-zinc-800 !text-white !mt-6">
+    <div className="card !bg-[#1F1F1F] !border !border-zinc-800 !text-white">
       <div className="card-body">
         <div className="!mb-10 flex-between flex-wrap gap-8">
           <h4 className="mb-0 !text-white">Top Courses Pick for You</h4>

@@ -40,7 +40,7 @@ const Header: React.FC = () => {
           <button className="users border flex justify-between items-center !gap-x-4 !bg-[#333] border-gray-200 rounded-pill !py-1.5 !px-2"
             type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span className="position-relative">
-              <img src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250" alt="Image" className="!h-8 !w-8 rounded-circle" />
+              <img src="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250" alt='no' className="!h-8 !w-8 rounded-circle" />
               <span className="activation-badge w-8 h-8 position-absolute inset-block-end-0 inset-inline-end-0"></span>
             </span>
             <FaChevronDown className='!w-3 !h-3 text-white'/>

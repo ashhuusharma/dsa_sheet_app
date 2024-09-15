@@ -14,7 +14,7 @@ const ProfileBar: React.FC = () => {
             <SlOptionsVertical className='!w-4 !h-4 text-white cursor-pointer' />
           </div>
           <div className='flex flex-col items-center !w-[220px] mx-auto justify-center text-white'>
-            <img className='!w-[150px] !h-[150px] !rounded-full' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
+            <img className='!w-[150px] !h-[150px] !rounded-full' alt='no' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
             <p className='!text-[16px] !mt-[10px] font-medium'>
               Good Morning, Prashant
             </p>
@@ -45,7 +45,7 @@ const ProfileBar: React.FC = () => {
 
           <div className='flex text-white items-center justify-between !px-2'>
             <div className='!w-8/12 flex'>
-              <img className='!w-[40px] !h-[40px] !rounded-full' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
+              <img className='!w-[40px] !h-[40px] !rounded-full' alt='no' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
               <div className='!ml-[10px]'>
                 <span className='!text-[14px] font-bold'>Ashu Sharma</span>
                 <p className='!text-[12px]'>Full Stack Developer</p>
@@ -58,7 +58,7 @@ const ProfileBar: React.FC = () => {
           <div className="!h-[1px] rounded-full !w-11/12 !mx-auto !mt-3 !bg-[#757575] !mb-6" />
           <div className='flex text-white items-center justify-between !px-2'>
             <div className='!w-8/12 flex'>
-              <img className='!w-[40px] !h-[40px] !rounded-full' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
+              <img className='!w-[40px] !h-[40px] !rounded-full' alt='no' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
               <div className='!ml-[10px]'>
                 <span className='!text-[14px] font-bold'>Ashu Sharma</span>
                 <p className='!text-[12px]'>Full Stack Developer</p>
@@ -71,7 +71,7 @@ const ProfileBar: React.FC = () => {
           <div className="!h-[1px] rounded-full !w-11/12 !mx-auto !mt-3 !bg-[#757575] !mb-6" />
           <div className='flex text-white items-center justify-between !px-2'>
             <div className='!w-8/12 flex'>
-              <img className='!w-[40px] !h-[40px] !rounded-full' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
+              <img className='!w-[40px] !h-[40px] !rounded-full' alt='no' src='https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250' />
               <div className='!ml-[10px]'>
                 <span className='!text-[14px] font-bold'>Ashu Sharma</span>
                 <p className='!text-[12px]'>Full Stack Developer</p>

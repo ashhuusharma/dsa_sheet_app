@@ -89,7 +89,22 @@ const Sidebar: React.FC = () => {
 
         <div className="!h-[4px] rounded-full !w-11/12 !mx-auto !mt-3 !bg-[#212121]" />
 
-        <div className="p-20 pt-80">
+        <div className="p-20 pt-80 absolute bottom-24">
+          <div className="flex flex-shrink-0 justify-between items-center mt-auto flex-wrap w-full">
+            <div className="flex flex-col !p-4 space-y-4 !bg-[#1F1F1F] !rounded-[20px] w-full justify-center items-center text-center !border !border-zinc-800">
+              <div className="flex gap-x-2">
+                <img className="!w-6 !h-6" src="https://takeuforward.org/static/media/stars.d4d99b5a08dbff4a6839.png" alt="stars" />
+                <span className="font-semibold text-white !text-[18px]">
+                  Upgrade to <span className="!text-[#702dff]">Plus</span>
+                </span>
+              </div>
+              <p className="!text-[14px] !text-[#BFBFBF]">Unleash Your Full Potential with Exclusive Features</p>
+              <button type="button" className="!bg-[#702dff] !text-white !rounded-[10px] !px-7 !py-3">Get Started Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-20 pt-80 absolute bottom-3">
           <div className="flex flex-shrink-0 justify-between items-center mt-auto flex-wrap w-full">
             <div className="flex flex-col !p-4 space-y-4 !bg-[#1F1F1F] !rounded-[20px] w-full justify-center items-center text-center !border !border-zinc-800">
               <div className="flex gap-x-2">

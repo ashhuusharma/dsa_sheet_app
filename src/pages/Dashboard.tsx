@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
-import Card from "../component/Card";
 import DashboardCards from "../component/DashboardCard";
 import Header from "../component/Header";
 import ProfileBar from "../component/ProfileBar";
 import Sidebar from "../component/Sidebar";
-import { FaBookOpen } from "react-icons/fa";
 import CourseSection from "../component/CourseSection";
+import Banner from "../component/Banner";
 
 export default function Dashboard() {
     return (
@@ -17,7 +15,8 @@ export default function Dashboard() {
                     <div className="row gy-4">
                         <div className="col-lg-9">
                             <DashboardCards />
-                            <CourseSection/>
+                            <Banner />
+                            <CourseSection />
                         </div>
                         <ProfileBar />
                     </div>

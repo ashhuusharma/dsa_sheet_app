@@ -34,7 +34,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <div className="card-body p-8">
           <Link to="course-details.html"
             className="bg-main-100 rounded-8 overflow-hidden text-center !mb-1 h-164 flex-center">
-            <img src={courseImg} alt="Course Image" />
+            <img src={courseImg} alt='no' />
           </Link>
           <div className="!py-1 !px-2">
             <div className='flex justify-between how are you?'>
@@ -63,7 +63,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             <div className="!h-[1px] rounded-full !w-12/12 !mx-auto !mt-3 !bg-[#757575] !mb-2" />
 
             <div className="flex-align gap-8 flex-wrap">
-              <img src={creatorImg} className="!w-7 !h-7 rounded-circle object-fit-cover" alt="User Image" />
+              <img src={creatorImg} className="!w-7 !h-7 rounded-circle object-fit-cover" alt='no' />
               <div className='flex items-center flex-col'>
                 <span className="text-white text-[12px]">Created by</span>
                 <Link to="profile.html" className="fw-semibold text-[10px] text-white !block hover-text-white hover-text-decoration-underline">

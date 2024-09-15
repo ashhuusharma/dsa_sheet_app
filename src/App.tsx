@@ -12,7 +12,6 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-
         </Routes>
       </Router>
     </NextUIProvider>
