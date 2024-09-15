@@ -25,7 +25,7 @@ const menuItems: MenuItem[] = [
     icon: <FaClipboard className='!h-5 !w-5' />,
     subMenu: [
       {
-        title: 'Student Courses', link: 'student-courses.html',
+        title: 'DSA', link: 'course/dsa',
         icon: ''
       }
     ],
@@ -59,23 +59,23 @@ const Sidebar: React.FC = () => {
         <div className="p-20 pt-10">
           <ul className="sidebar-menu space-y-4">
             {menuItems.map((item, index) => (
-              <li key={index} className={`!px-3 !py-2 rounded-lg mb-0.5 last:mb-0 transition-all ease-out duration-300 hover:!bg-[#212121] ${index == 0 && '!bg-[#212121]'}`}>
+              <li key={index} className={`mb-0.5 last:mb-0`}>
                 <a
                   href={item.link || '#'}
-                  className={` flex items-center !text-white hover:text-white truncate transition duration-150`}
+                  className={`rounded-lg flex items-center !px-3 !py-2 !text-white hover:text-white truncate transition-all ease-out duration-300 hover:!bg-[#212121] ${index === 0 && '!bg-[#212121]'}`}
                 >
-                  {item.icon}
-                  <span className={`!text-[15px] ${index == 0 ? '!text-[#702dff]' : '!text-[#fff]'} !font-medium !ml-2 lg:!opacity-0 lg:sidebar-expanded:!opacity-100 2xl:!opacity-100 !duration-200`}>{item.title}</span>
+                  {item.icon} 
+                  <span className={`!text-[15px] ${index === 0 ? '!text-[#702dff]' : '!text-[#fff]'} !font-medium !ml-2 lg:!opacity-0 lg:sidebar-expanded:!opacity-100 2xl:!opacity-100 !duration-200`}>{item.title}</span>
                 </a>
                 {/* Submenu */}
                 {item.subMenu && (
-                  <ul className="sidebar-submenu pl-8 space-y-2 mt-2">
+                  <ul className="!pl-8 !space-y-2 !mt-2">
                     {item.subMenu.map((subItem, subIndex) => (
                       <li key={subIndex} className="sidebar-submenu__item">
                         <a
                           href={subItem.link}
-                          className="sidebar-submenu__link block text-gray-400 hover:text-white hover:bg-gray-800 p-2 rounded-lg"
-                        >
+                          className={`rounded-lg !text-[14px] flex items-center ${index === 0 ? '!text-[#702dff]' : '!text-[#fff]'}  !font-medium !ml-2 !px-3 !py-2 !text-white hover:text-white truncate transition-all ease-out duration-300 hover:!bg-[#212121] ${index === 0 && '!bg-[#212121]'}`}
+                            >
                           {subItem.title}
                         </a>
                       </li>

@@ -1,6 +1,10 @@
+import { Link } from "react-router-dom";
+import Card from "../component/Card";
+import DashboardCards from "../component/DashboardCard";
 import Header from "../component/Header";
 import ProfileBar from "../component/ProfileBar";
 import Sidebar from "../component/Sidebar";
+import { FaBookOpen } from "react-icons/fa";
 
 export default function Dashboard() {
     return (
@@ -11,75 +15,14 @@ export default function Dashboard() {
                 <div className="dashboard-body !bg-[#111111]">
                     <div className="row gy-4">
                         <div className="col-lg-9">
-                            <div className="row gy-4">
-                                <div className="col-xxl-3 col-sm-6">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h4 className="mb-2">155+</h4>
-                                            <span className="text-gray-600">Completed Courses</span>
-                                            <div className="flex-between gap-8 mt-16">
-                                                <span
-                                                    className="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-main-600 text-white text-2xl"><i
-                                                        className="ph-fill ph-book-open"></i></span>
-                                                <div id="complete-course" className="remove-tooltip-title rounded-tooltip-value">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xxl-3 col-sm-6">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h4 className="mb-2">39+</h4>
-                                            <span className="text-gray-600">Earned Certificate</span>
-                                            <div className="flex-between gap-8 mt-16">
-                                                <span
-                                                    className="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-main-two-600 text-white text-2xl"><i
-                                                        className="ph-fill ph-certificate"></i></span>
-                                                <div id="earned-certificate" className="remove-tooltip-title rounded-tooltip-value">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xxl-3 col-sm-6">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h4 className="mb-2">25+</h4>
-                                            <span className="text-gray-600">Course in Progress</span>
-                                            <div className="flex-between gap-8 mt-16">
-                                                <span
-                                                    className="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-purple-600 text-white text-2xl">
-                                                    <i className="ph-fill ph-graduation-cap"></i></span>
-                                                <div id="course-progress" className="remove-tooltip-title rounded-tooltip-value">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-xxl-3 col-sm-6">
-                                    <div className="card">
-                                        <div className="card-body">
-                                            <h4 className="mb-2">18k+</h4>
-                                            <span className="text-gray-600">Community Support</span>
-                                            <div className="flex-between gap-8 mt-16">
-                                                <span
-                                                    className="flex-shrink-0 w-48 h-48 flex-center rounded-circle bg-warning-600 text-white text-2xl"><i
-                                                        className="ph-fill ph-users-three"></i></span>
-                                                <div id="community-support" className="remove-tooltip-title rounded-tooltip-value">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <DashboardCards />
 
                             <div className="card mt-24">
                                 <div className="card-body">
                                     <div className="mb-20 flex-between flex-wrap gap-8">
                                         <h4 className="mb-0">Top Courses Pick for You</h4>
-                                        <a href="student-courses.html"
-                                            className="text-13 fw-medium text-main-600 hover-text-decoration-underline">See All</a>
+                                        <Link to={"#"}
+                                            className="text-13 fw-medium text-main-600 hover-text-decoration-underline">See All</Link>
                                     </div>
 
                                     <div className="row g-20">
