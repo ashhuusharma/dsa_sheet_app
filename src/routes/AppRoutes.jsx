@@ -6,6 +6,7 @@ import Register from '../pages/Register';
 import store from '../redux/store';
 import { initializeUserAsync } from '../redux/userSlice';
 import { useEffect } from 'react';
+import CourseDetail from '../pages/CourseDetail';
 
 function AppRoutes() {
     // Get the login state from Redux
@@ -15,12 +16,12 @@ function AppRoutes() {
         store.dispatch(initializeUserAsync());
     }, []);
 
-
     return (
         <Router>
             <Routes>
                 {/* If logged in, show Dashboard, otherwise redirect to login */}
                 <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
+                <Route path="/course/:slug" element={isLoggedIn ? <CourseDetail /> : <Navigate to="/login" />} />
 
                 {/* Only allow access to login if the user is not logged in */}
                 <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} />

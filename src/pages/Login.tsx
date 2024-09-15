@@ -11,7 +11,6 @@ export default function Login() {
         email: '',
         password: '',
     });
-    const [errorMessage, setErrorMessage] = useState('');
 
     // Handle input changes
     const handleChange = (e: any) => {
@@ -87,7 +86,6 @@ export default function Login() {
                             </div>
                         </div>
                         <button type="submit" className="btn btn-main rounded-pill w-100">Sign In</button>
-                        {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
                     </form>
 
                     <p className="mt-32 text-center !text-white">Don't have an account?

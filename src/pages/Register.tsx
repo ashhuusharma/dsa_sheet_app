@@ -12,7 +12,6 @@ export default function Register() {
         email: '',
         password: '',
     });
-    const [errorMessage, setErrorMessage] = useState('');
 
     // Handle input changes
     const handleChange = (e: any) => {
@@ -105,7 +104,6 @@ export default function Register() {
                             </div>
                         </div>
                         <button type="submit" className="btn btn-main rounded-pill w-100">Sign Up</button>
-                        {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
                     </form>
 
                     <p className="mt-32  !text-white text-center">Already have an account?

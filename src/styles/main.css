@@ -3079,7 +3079,7 @@ button:focus {
 .p-190 {
     padding: var(--size-190) !important;
 }
-
+/* 
 .px-2 {
     padding-inline: var(--size-2) !important;
 }
@@ -4204,7 +4204,7 @@ button:focus {
 
 .pe-0 {
     padding-inline-end: 0 !important;
-}
+} */
 
 /* ================================= Padding Css End =========================== */
 /* ================================= Classes Css Start =========================== */
