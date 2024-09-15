@@ -12,6 +12,8 @@ require("./database/conn");
 
 // Import Routes
 const courseRoutes = require('./routes/course.route');
+const authRoutes = require('./routes/auth.route');
+const userRoutes = require('./routes/user.route');
 
 // Middleware to serve static files (e.g., images, documents)
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
@@ -65,6 +67,8 @@ app.get("/", async (req, res) => {
 
 // Course Routes: Handle all course-related API requests
 app.use('/api/courses', courseRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 
 // ------------------- Start Server -------------------

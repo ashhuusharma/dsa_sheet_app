@@ -1,12 +1,12 @@
 // routes/courseRoutes.js
 const express = require('express');
 const router = express.Router();
-const course = require('../controllers/course.controller');
+const auth = require('../controllers/auth.controller');
 
 // Route to add a new course
-router.post('/add', course.addCourse);
+router.post('/login', auth.loginUser);
 
 // Route to get all courses
-router.get('/', course.getCourses);
+router.get('/register', auth.registerUser);
 
 module.exports = router;
