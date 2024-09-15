@@ -1,95 +1,74 @@
+// Load environment variables from .env file
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
-require("dotenv").config();
-var cors = require("cors");
+const cors = require("cors");
 const formData = require("express-form-data");
 const path = require("path");
-// Middleware to serve static files
+
+// Database Connection
+require("./database/conn");
+
+// Import Routes
+const courseRoutes = require('./routes/course.route');
+
+// Middleware to serve static files (e.g., images, documents)
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
-// ------------ Middleware --------------------
-const authenticateToken = require("./middleware/authenticateToken");
-
-// ---------------- Helpers ----------------
-const { getPublicIpAddress } = require("./function/function");
+// ------------------- Helpers -------------------
+const { getPublicIpAddress } = require("./helpers/validation.helpers");
 
 // Server Settings
 const port = process.env.PORT || 3002;
 
-// --------------------------------- Middleware --------------------------------
-// Apply the tokenAuth middleware to all routes except the login route
-// Set up allowed origins for CORS
+// ------------------- CORS Setup -------------------
+// Define allowed origins for CORS (Cross-Origin Resource Sharing)
 const allowedOrigins = [
   'http://localhost:3001',
   'http://localhost:3000',
   'http://localhost:3002',
 ];
 
-// Apply CORS middleware with the custom configuration
+// Apply CORS middleware with a custom configuration
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // Allow requests with no origin (e.g., mobile apps or curl requests)
+    if (!origin) return callback(null, true); // Allow requests with no origin (e.g., mobile apps, curl requests)
+    
     if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
+      callback(null, true); // Allow requests from the allowed origins
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS')); // Block requests from other origins
     }
   }
 }));
 
-// app.use(cors())
+// Enable parsing of form data (for handling file uploads)
+app.use(formData.parse());
 
-app.use(formData.parse()); // Middleware to parse FormData
-
-// ------------------------ DATA Decoding -------------------------
+// ------------------ Data Parsing ------------------
+// Middleware to parse incoming JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(async (req, res, next) => {
-  // const userAgent = req.headers['user-agent'];
-  // if (userAgent && userAgent.includes('Postman')) {
-  //   // Bypass authentication for Postman requests
-  //   return next();
-  // }
-  if (req.path.startsWith("/uploads")) {
-    return next(); // Allow access without authentication
-  }
-  if (
-    req.path === "/user/login" ||
-    req.path === "/token/update" ||
-    req.path === "/"
-  ) {
-    return next();
-  } else {
-    const rep = await authenticateToken(req, res);
-    if (!rep.success) {
-      return res.status(rep.code).json({ success: rep.success, code: rep.code, msg: rep.msg });
-    } else {
-      return next();
-    }
-  }
-});
+// ------------------- Routes -------------------
 
+// Root Route: Example route to fetch the client's public IP address
 app.get("/", async (req, res) => {
-  // Example query execution
   const clientIP = await getPublicIpAddress(req);
-  // return false
-  return res.status(200).json({ success: true, code: 200, msg: "Hey, This is node api, and Your IP address is " + clientIP });
-});
-
-// --------------------- User APIS --------------------------------------
-
-// Close the connection when the application is shutting down
-process.on("SIGINT", function () {
-  conn.end(function (err) {
-    if (err) {
-      return console.log("Error closing database connection:", err.stack);
-    }
-    console.log("Database connection closed.");
-    process.exit();
+  return res.status(200).json({ 
+    success: true, 
+    code: 200, 
+    msg: `Hey, This is Node API, and your IP address is ${clientIP}` 
   });
 });
 
+// Course Routes: Handle all course-related API requests
+app.use('/api/courses', courseRoutes);
+
+
+// ------------------- Start Server -------------------
+// Start the Express server and listen on the defined port
 app.listen(port, () => {
-  console.log(`Example app on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
