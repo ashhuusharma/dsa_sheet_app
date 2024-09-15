@@ -1,5 +1,4 @@
 const Banner = () => {
-    
     return (
         <div className="w-full rounded-2xl !h-[191px] !my-6 !bg-[#702DFF] !py-[24px] !px-[20px] relative">
             <span className="uppercase !text-[14px] text-white">
