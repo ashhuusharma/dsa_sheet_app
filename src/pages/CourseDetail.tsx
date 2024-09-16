@@ -105,35 +105,35 @@ export default function CourseDetail() {
                                                     title={<p className='text-lg font-bold text-zinc-300'>{subtopic.title}</p>}
                                                     className='text-white'
                                                 >
-                                                    {subtopic.problems.map((problem: any) => (
-                                                        <div key={problem.problemId} className='pl-6 mt-2'>
-                                                            <table className="table-auto w-full divide-y divide-gray-200">
-                                                                <thead className="text-xs uppercase text-[#8C8C8C]">
-                                                                    <tr>
-                                                                        <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold text-center">Status</p>
-                                                                        </th>
-                                                                        <th className="px-2 border-r-2 dark:border-dark_40 w-1/3 first:pl-10 last:pr-10 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold flex items-start">Problem</p>
-                                                                        </th>
-                                                                        <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold text-center">Article</p>
-                                                                        </th>
-                                                                        <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold">Youtube</p>
-                                                                        </th>
-                                                                        <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold text-center">Practice</p>
-                                                                        </th>
-                                                                        <th className="px-3 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold text-center">Note</p>
-                                                                        </th>
-                                                                        <th className="px-1 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                                                            <p className="font-semibold text-center">Difficulty</p>
-                                                                        </th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody className="text-[13px]">
+                                                    <div className='pl-6 mt-2'>
+                                                        <table className="table-auto w-full divide-y divide-gray-200">
+                                                            <thead className="text-xs uppercase text-[#8C8C8C]">
+                                                                <tr>
+                                                                    <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold text-center">Status</p>
+                                                                    </th>
+                                                                    <th className="px-2 border-r-2 dark:border-dark_40 w-1/3 first:pl-10 last:pr-10 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold flex items-start">Problem</p>
+                                                                    </th>
+                                                                    <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold text-center">Article</p>
+                                                                    </th>
+                                                                    <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold">Youtube</p>
+                                                                    </th>
+                                                                    <th className="px-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold text-center">Practice</p>
+                                                                    </th>
+                                                                    <th className="px-3 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold text-center">Note</p>
+                                                                    </th>
+                                                                    <th className="px-1 border-r-2 dark:border-dark_40 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                                                        <p className="font-semibold text-center">Difficulty</p>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            {subtopic.problems.map((problem: any) => (
+                                                                <tbody key={problem.problemId} className="text-[13px]">
                                                                     <tr className="border-t-2 border-b-2 last:border-b-0 dark:border-dark_40">
                                                                         <td className="px-2 first:pl-5 last:pr-5 py-4 whitespace-nowrap flex justify-center items-center">
                                                                             <input
@@ -215,10 +215,9 @@ export default function CourseDetail() {
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
-
-                                                            </table>
-                                                        </div>
-                                                    ))}
+                                                            ))}
+                                                        </table>
+                                                    </div>
                                                 </AccordionItem>
                                             </Accordion>
                                         ))}
