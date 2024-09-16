@@ -287,7 +287,7 @@ exports.createProblem = async (req, res) => {
         
         */
 
-        res.status(201).json({ success: true, problem: newProblem });
+        res.status(201).json({ success: true, problem: 'New Problem' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
