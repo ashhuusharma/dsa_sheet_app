@@ -71,7 +71,7 @@ const generateRandomId = (firstStr, lastStr) => {
     const cleanlastStr = lastStr.replace(/\s/g, '').toUpperCase();
 
     // Generate a random number between 1000 and 9999
-    const randomDigits = Math.floor(1000 + Math.random() * 9000);
+    const randomDigits = Math.floor(100 + Math.random() * 9000000);
 
     // Combine the cleaned first name with the random number
     const randomId = `${cleanFirstName}${randomDigits}${cleanlastStr}`;
