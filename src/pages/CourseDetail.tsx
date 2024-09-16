@@ -143,56 +143,79 @@ export default function CourseDetail() {
                                                                         </td>
                                                                         <td className="px-2 border-l-2 dark:border-dark_40 first:pl-5 last:pr-5 py-4 whitespace-nowrap">
                                                                             <div className="!px-3 font-medium cursor-pointer text-zinc-200 flex justify-start items-start">
-                                                                                <Link to={''} className='!text-white' target="_blank" rel="noreferrer">
+                                                                                <Link to={`${problem.problemId}`} className='!text-white' target="_blank" rel="noreferrer">
                                                                                     {problem.title}
                                                                                 </Link>
                                                                             </div>
                                                                         </td>
                                                                         <td className="px-2 border-l-2 dark:border-dark_40 first:pl-5 last:pr-5 py-4 whitespace-nowrap">
-                                                                            <Link to={problem.articleLink} target="_blank" rel="noreferrer"
+                                                                            <Link to={`${problem.problemId}`} target="_blank" rel="noreferrer"
                                                                                 className="flex justify-center items-center text-zinc-300">
                                                                                 <MdArticle className='!w-6 !h-6 text-white' />
                                                                             </Link>
                                                                         </td>
                                                                         <td className="px-2 border-l-2 dark:border-dark_40 first:pl-5 last:pr-5 py-4 whitespace-nowrap">
-                                                                            <div className="flex justify-center items-center">
-                                                                                <div className="cursor-pointer">
-                                                                                    <Link to={problem.youtubeLink}>
-                                                                                        <FaYoutube className='!w-6 !h-6 text-red-600' />
-                                                                                    </Link>
+                                                                            {problem.youtubeLink ? (
+                                                                                <div className="flex justify-center items-center">
+                                                                                    <div className="cursor-pointer">
+                                                                                        <Link to={problem.youtubeLink}>
+                                                                                            <FaYoutube className='!w-6 !h-6 text-red-600' />
+                                                                                        </Link>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            ) : (
+                                                                                <p className="text-white">Coming soon...</p>
+                                                                            )}
                                                                         </td>
                                                                         <td className="px-2 border-l-2 dark:border-dark_40 first:pl-5 last:pr-5 py-4 whitespace-nowrap">
-                                                                            <div className="flex justify-center items-center">
-                                                                                <Link to={problem.practiceLink}>
-                                                                                    <SiGeeksforgeeks className='!w-6 !h-6 text-green-600' />
-                                                                                </Link>
-                                                                            </div>
+                                                                            {problem.geeksForGeeksLink ? (
+                                                                                <div className="flex justify-center items-center">
+                                                                                    <Link to={problem.geeksForGeeksLink}>
+                                                                                        <SiGeeksforgeeks className='!w-6 !h-6 text-green-600' />
+                                                                                    </Link>
+                                                                                </div>
+                                                                            ) : problem.articleLink ? (
+                                                                                <div className="flex justify-center items-center">
+                                                                                    <Link to={problem.articleLink}>
+                                                                                        <SiCodingninjas className='!w-6 !h-6 text-orange-600' />
+                                                                                    </Link>
+                                                                                </div>
+                                                                            ) : (
+                                                                                <p className="text-white">Coming soon...</p>
+                                                                            )}
                                                                         </td>
                                                                         <td className="px-2 border-l-2 border-r-2 dark:border-dark_40 first:pl-5 last:pr-4 py-4 whitespace-nowrap">
-                                                                            <div className="flex justify-center cursor-pointer items-center">
-                                                                                <div className="bg-light_50 dark:bg-dark_50 text-zinc-300 rounded-lg p-1">
-                                                                                    <FaLock className="!text-gray-400 !ml-2 !w-6 !h-6" title="Locked" />
+                                                                            {problem.notes ? (
+                                                                                <div className="flex justify-center cursor-pointer items-center">
+                                                                                    <div className="bg-light_50 dark:bg-dark_50 text-zinc-300 rounded-lg p-1">
+                                                                                        <FaLock className="!text-gray-400 !ml-2 !w-6 !h-6" title="Locked" />
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            ) : (
+                                                                                <p className="text-white">Coming soon...</p>
+                                                                            )}
                                                                         </td>
                                                                         <td className="px-2 dark:border-dark_40 first:pl-5 flex justify-center items-center last:pr-5 py-4 whitespace-nowrap">
-                                                                            <div
-                                                                                className={`font-medium rounded-full text-center px-4 py-1 ${problem.difficulty === 1 ? "bg-green-200 text-green-600 dark:bg-[#0B2816]" :
-                                                                                    problem.difficulty === 2 ? "bg-yellow-200 text-yellow-600 dark:bg-[#482200]" :
-                                                                                        problem.difficulty === 3 ? "bg-red-200 text-red-500 dark:bg-[#470C08]" :
-                                                                                            "bg-gray-200 text-gray-600 dark:bg-[#1F1F1F]"
-                                                                                    }`}
-                                                                            >
-                                                                                {problem.difficulty === 1 ? "Easy" :
-                                                                                    problem.difficulty === 2 ? "Medium" :
-                                                                                        problem.difficulty === 3 ? "Hard" :
-                                                                                            "Unknown"}
-                                                                            </div>
+                                                                            {problem.difficulty ? (
+                                                                                <div
+                                                                                    className={`font-medium rounded-full text-center px-4 py-1 ${problem.difficulty === 1 ? "bg-green-200 text-green-600 dark:bg-[#0B2816]" :
+                                                                                        problem.difficulty === 2 ? "bg-yellow-200 text-yellow-600 dark:bg-[#482200]" :
+                                                                                            problem.difficulty === 3 ? "bg-red-200 text-red-500 dark:bg-[#470C08]" :
+                                                                                                "bg-gray-200 text-gray-600 dark:bg-[#1F1F1F]"
+                                                                                        }`}
+                                                                                >
+                                                                                    {problem.difficulty === 1 ? "Easy" :
+                                                                                        problem.difficulty === 2 ? "Medium" :
+                                                                                            problem.difficulty === 3 ? "Hard" :
+                                                                                                "Unknown"}
+                                                                                </div>
+                                                                            ) : (
+                                                                                <p className="text-white">Coming soon...</p>
+                                                                            )}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
+
                                                             </table>
                                                         </div>
                                                     ))}

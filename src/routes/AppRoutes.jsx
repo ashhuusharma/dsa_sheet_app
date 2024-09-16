@@ -1,20 +1,29 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import Dashboard from '../pages/Dashboard';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import store from '../redux/store';
 import { initializeUserAsync } from '../redux/userSlice';
-import { useEffect } from 'react';
 import CourseDetail from '../pages/CourseDetail';
+import CourseDetailProblem from '../pages/CourseDetailProblem';
 
 function AppRoutes() {
-    // Get the login state from Redux
+    const [loading, setLoading] = useState(true);
     const { isLoggedIn } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        store.dispatch(initializeUserAsync());
-    }, []);
+        const initializeAuth = async () => {
+            await dispatch(initializeUserAsync());
+            setLoading(false);
+        };
+        initializeAuth();
+    }, [dispatch]);
+
+    if (loading) {
+        return <div>Loading...</div>; // Or a spinner component
+    }
 
     return (
         <Router>
@@ -22,6 +31,7 @@ function AppRoutes() {
                 {/* If logged in, show Dashboard, otherwise redirect to login */}
                 <Route path="/" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
                 <Route path="/course/:slug" element={isLoggedIn ? <CourseDetail /> : <Navigate to="/login" />} />
+                <Route path="/course/:slug/:problemId" element={isLoggedIn ? <CourseDetailProblem /> : <Navigate to="/login" />} />
 
                 {/* Only allow access to login if the user is not logged in */}
                 <Route path="/login" element={!isLoggedIn ? <Login /> : <Navigate to="/" />} />
