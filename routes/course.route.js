@@ -9,6 +9,7 @@ router.post('/add', course.addCourse);
 // Route to get all courses
 router.get('/get', course.getCourses);
 router.get('/:slug', course.getCourseBySlug);
+router.get('/:slug/p/:problemId', course.getCourseBySlugAndProblem);
 
 router.post('/:courseId/topic/add', course.createTopic);
 router.post('/:topicId/subtopic/add', course.createSubTopic);

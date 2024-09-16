@@ -5,6 +5,7 @@ const Keyword = require('../models/Keyword.model');
 const Topic = require('../models/Topic.model');
 const SubTopic = require('../models/Subtopic.model');
 const Problem = require('../models/Problem.model');
+const { dummyContent } = require('../helpers/content');
 
 // Add a new course
 exports.addCourse = async (req, res) => {
@@ -135,6 +136,28 @@ exports.getCourseBySlug = async (req, res) => {
     }
 };
 
+exports.getCourseBySlugAndProblem = async (req, res) => {
+    try {
+        const { problemId } = req.params;
+
+        // Find course by slug
+        const [problem] = await Problem.find({ problemId: problemId });
+
+        if (!problem) {
+            return res.status(404).json({ success: false, message: 'Course not found' });
+        }
+
+        return res.status(200).json({
+            success: true,
+            problem,
+            content: dummyContent
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
 // Create a new topic
 exports.createTopic = async (req, res) => {
     const { title } = req.body;
@@ -177,11 +200,11 @@ exports.createSubTopic = async (req, res) => {
 exports.createProblem = async (req, res) => {
     const { title, difficulty, note, youtubeLink, geeksForGeeksLink, articleLink, content } = req.body;
     const { subtopicId } = req.params;
-    
+
     try {
         // Generate unique problemId
         const problemId = generateRandomId('NEW', 'PROBLEM');
-        
+
         // Create a new problem
         const newProblem = new Problem({
             problemId,
