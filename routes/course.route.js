@@ -10,6 +10,8 @@ router.post('/add', course.addCourse);
 router.get('/get', course.getCourses);
 router.get('/:slug', course.getCourseBySlug);
 
-router.get('/add/topic', course.createTopic);
+router.post('/:courseId/topic/add', course.createTopic);
+router.post('/:topicId/subtopic/add', course.createSubTopic);
+router.post('/:subtopicId/problem/add', course.createProblem);
 
 module.exports = router;
