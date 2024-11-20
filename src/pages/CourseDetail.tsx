@@ -9,8 +9,14 @@ import { SiCodingninjas } from "react-icons/si";
 import { FaYoutube } from "react-icons/fa6";
 import { MdArticle } from "react-icons/md";
 import { FaLock } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export default function CourseDetail() {
+
+    const { userDetails } = useSelector((state: any) => state.user);
+
+
     const [course, setCourse] = useState<any>(null);
     const [loading, setLoading] = useState<any>(true);
     const [error, setError] = useState<any>(null);
@@ -37,6 +43,42 @@ export default function CourseDetail() {
 
         fetchCourse();
     }, [slug]);
+
+
+    const handleMarkAsSolved = async (problemId: string) => {
+        try {
+            const { username } = userDetails;
+            const response = await getAxiosWithToken({
+                url: `course/mark/as/done/${problemId}/${username}`,
+                method: "POST",
+            });
+
+            if (response.data.success) {
+                toast.success(response.data.message);
+
+                // Update the state
+                setCourse((prev: any) => ({
+                    ...prev,
+                    topics: prev.topics.map((topic: any) => ({
+                        ...topic,
+                        subtopics: topic.subtopics.map((subtopic: any) => ({
+                            ...subtopic,
+                            problems: subtopic.problems.map((problem: any) =>
+                                problem.problemId === problemId
+                                    ? { ...problem, isDone: response.data.mark }
+                                    : problem
+                            ),
+                        })),
+                    })),
+                }));
+            } else {
+                toast.error(response.data.message || "Failed to update the problem.");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("An error occurred while updating the problem status.");
+        }
+    };
 
     return (
         <main className="!bg-[#111111] dark">
@@ -137,7 +179,9 @@ export default function CourseDetail() {
                                                                     <tr className="border-t-2 border-b-2 last:border-b-0 dark:border-dark_40">
                                                                         <td className="px-2 first:pl-5 last:pr-5 py-4 whitespace-nowrap flex justify-center items-center">
                                                                             <input
-                                                                                id="srinpttpt" name="complete" type="checkbox"
+                                                                                onClick={() => handleMarkAsSolved(problem.problemId)}
+                                                                                id={`mark__point_${problem.problemId}`} name="complete" type="checkbox"
+                                                                                checked={problem.isDone || false}
                                                                                 className="!w-6 !h-6 form-checkbox text-brand_50 cursor-pointer rounded bg-zinc-800"
                                                                             />
                                                                         </td>

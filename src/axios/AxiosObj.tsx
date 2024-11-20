@@ -55,7 +55,7 @@ export const getAxiosWithoutToken = async <T = any>(config: RequestConfig): Prom
 // Function to handle requests that require a token
 export const getAxiosWithToken = async <T = any>(config: RequestConfig): Promise<APIResponse<T>> => {
     try {
-        console.log(config.url);
+        // console.log(config.url);
         const response: APIResponse<T> = await axiosInstance({
             method: config.method || 'GET',
             url: config.url,
