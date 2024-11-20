@@ -14,5 +14,7 @@ router.get('/:slug/p/:problemId', course.getCourseBySlugAndProblem);
 router.post('/:courseId/topic/add', course.createTopic);
 router.post('/:topicId/subtopic/add', course.createSubTopic);
 router.post('/:subtopicId/problem/add', course.createProblem);
+router.post('/mark/as/done/:problemId/:username', course.markAsADoneProblem);
+
 
 module.exports = router;

@@ -5,7 +5,9 @@ const Keyword = require('../models/Keyword.model');
 const Topic = require('../models/Topic.model');
 const SubTopic = require('../models/Subtopic.model');
 const Problem = require('../models/Problem.model');
+const ProblemMapper = require('../models/ProblemMapper.model');
 const { dummyContent } = require('../helpers/content');
+const UserModel = require('../models/User.model');
 
 // Add a new course
 exports.addCourse = async (req, res) => {
@@ -64,6 +66,7 @@ exports.addCourse = async (req, res) => {
 // Get all courses
 exports.getCourses = async (req, res) => {
     try {
+        // Fetch all courses
         const courses = await Course.find({});
         return res.status(200).json({ success: true, courses });
     } catch (error) {
@@ -76,65 +79,71 @@ exports.getCourseBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
 
+        // Validate input
+        if (!slug) {
+            return res.status(400).json({ success: false, message: 'Slug is required' });
+        }
+
         // Find course by slug
         const course = await Course.findOne({ slug });
-
         if (!course) {
             return res.status(404).json({ success: false, message: 'Course not found' });
         }
 
-        // Fetch keywords, note, and topics related to the course
-        const keywords = await Keyword.find({ courseId: course.courseId });
-        const note = await Note.findOne({ courseId: course.courseId });
+        // Fetch related data
+        const [keywords, note, topics, solvedProblemIds] = await Promise.all([
+            Keyword.find({ courseId: course.courseId }),
+            Note.findOne({ courseId: course.courseId }),
+            Topic.find({ courseId: course.courseId }).sort({ topicId: 1 }),
+            ProblemMapper.find({}).then(mappers => mappers.map(mapper => mapper.problemId))
+        ]);
 
-        // Fetch topics related to the course
-        const topics = await Topic.find({ courseId: course.courseId }).sort({ topicId: 1 });
+        // Prepare topics with subtopics and problems
+        const topicsWithDetails = await Promise.all(
+            topics.map(async (topic) => {
+                const subtopics = await SubTopic.find({ topicId: topic.topicId });
 
-        // For each topic, fetch its subtopics and their problems
-        const topicsWithSubtopicsAndProblems = await Promise.all(topics.map(async (topic) => {
-            // Fetch subtopics for each topic
-            const subtopics = await SubTopic.find({ topicId: topic.topicId });
+                const subtopicsWithProblems = await Promise.all(
+                    subtopics.map(async (subtopic) => {
+                        const problems = await Problem.find({ subtopicId: subtopic.subtopicId });
+                        return {
+                            subtopicId: subtopic.subtopicId,
+                            title: subtopic.title,
+                            problems: problems.map(problem => ({
+                                problemId: problem.problemId,
+                                title: problem.title,
+                                difficulty: problem.difficulty,
+                                note: problem.note,
+                                youtubeLink: problem.youtubeLink,
+                                geeksForGeeksLink: problem.geeksForGeeksLink,
+                                articleLink: problem.articleLink,
+                                isDone: solvedProblemIds.includes(problem.problemId)
+                            }))
+                        };
+                    })
+                );
 
-            // For each subtopic, fetch its problems
-            const subtopicsWithProblems = await Promise.all(subtopics.map(async (subtopic) => {
-                const problems = await Problem.find({ subtopicId: subtopic.subtopicId });
-
-                // Attach the problems to the subtopic
                 return {
-                    subtopicId: subtopic.subtopicId,
-                    title: subtopic.title,
-                    problems: problems.map(problem => ({
-                        problemId: problem.problemId,
-                        title: problem.title,
-                        difficulty: problem.difficulty,
-                        note: problem.note,
-                        youtubeLink: problem.youtubeLink,
-                        geeksForGeeksLink: problem.geeksForGeeksLink,
-                        articleLink: problem.articleLink,
-                    }))
+                    topicId: topic.topicId,
+                    title: topic.title,
+                    subtopics: subtopicsWithProblems
                 };
-            }));
-
-            // Attach the subtopics to the topic
-            return {
-                topicId: topic.topicId,
-                title: topic.title,
-                subtopics: subtopicsWithProblems
-            };
-        }));
+            })
+        );
 
         return res.status(200).json({
             success: true,
             course,
             keywords,
             note,
-            topics: topicsWithSubtopicsAndProblems
+            topics: topicsWithDetails
         });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
 
 exports.getCourseBySlugAndProblem = async (req, res) => {
     try {
@@ -223,7 +232,7 @@ exports.createProblem = async (req, res) => {
             const topicId = generateRandomId(`${index}__NEW`, `TOPIC__${index}`)
             const newTopic = new Topic({
                 topicId,
-                courseId:"NEW4730COURSE",
+                courseId: "NEW4730COURSE",
                 title: item.step_title
             })
             await newTopic.save();
@@ -292,6 +301,56 @@ exports.createProblem = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+
+exports.markAsADoneProblem = async (req, res) => {
+    const { problemId, username } = req.params;
+    try {
+        const problem = await Problem.findOne({ problemId });
+        if (!problem) {
+            return res.status(404).json({ success: false, message: 'Problem not found' });
+        }
+        if (!username) {
+            return res.status(404).json({ success: false, message: 'Username not found' });
+        }
+
+        const user = await UserModel.findOne({ username });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const currentProblem = await Problem.findOne({ problemId });
+        if (!currentProblem) {
+            return res.status(404).json({ success: false, message: 'Problem not found' });
+        }
+
+        const isProblemMapper = await ProblemMapper.findOne({ problemId, username });
+        if (isProblemMapper) {
+            const problemMapper = await ProblemMapper.deleteOne({ problemId, username });
+            if (problemMapper) {
+                return res.status(200).json({ success: true, message: 'Remove from mark as a done', mark: false });
+            }
+        } else {
+            const problemMapper = await ProblemMapper.create({
+                problemId,
+                username
+            })
+            if (!problemMapper) {
+                return res.status(404).json({ success: false, message: 'Problem not found' });
+            }
+            return res.status(200).json({ success: true, message: 'Problem marked as done', mark: true });
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+
+
+
+
+
+
 
 
 const dataa = [
