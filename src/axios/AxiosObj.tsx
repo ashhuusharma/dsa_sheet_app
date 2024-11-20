@@ -2,7 +2,7 @@ import axios from 'axios'; // Import AxiosRequestConfig
 // import store from '../redux/store'; // Uncomment if using Redux
 
 // Define the API URL
-const API_URL = 'http://13.202.202.172:3003/';
+const API_URL = 'http://3.111.218.137:3003/';
 
 // Create Axios instance with base URL and default headers
 const axiosInstance = axios.create({
