@@ -28,7 +28,7 @@ const port = process.env.PORT || 3003;
 // Define allowed origins for CORS (Cross-Origin Resource Sharing)
 const allowedOrigins = [
   "http://localhost:3001",
-  "http://13.202.202.172:3004"
+  "http://3.111.218.137:3004"
 ];
 
 // Apply CORS middleware with a custom configuration
