@@ -6,6 +6,8 @@ import { FaUser } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { Link, useLocation } from 'react-router-dom';
 import { getAxiosWithToken } from '../axios/AxiosObj';
+import { useDispatch } from 'react-redux';
+import { getLogoutUser } from '../redux/userSlice';
 
 interface Course {
   _id: string;
@@ -18,6 +20,7 @@ interface Course {
 }
 
 const Sidebar: React.FC = () => {
+  const dispatch = useDispatch<any>();
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -67,6 +70,11 @@ const Sidebar: React.FC = () => {
       return '!bg-[#212121]';
     }
     return '';
+  };
+
+  const handleLogout = () => {
+    dispatch(getLogoutUser())
+    window.location.reload();
   };
 
   return (
@@ -158,6 +166,7 @@ const Sidebar: React.FC = () => {
             <li className={`mb-0.5 last:mb-0`}>
               <a
                 href={'#'}
+                onClick={handleLogout}
                 className={`rounded-lg flex items-center !px-1 !py-2 !text-white hover:text-white truncate transition-all ease-out duration-300 hover:!bg-[#212121]`}
               >
                 <IoLogOut className="!h-5 !w-5 text-red-600" />
