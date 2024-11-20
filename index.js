@@ -22,14 +22,13 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 const { getPublicIpAddress } = require("./helpers/validation.helpers");
 
 // Server Settings
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3003;
 
 // ------------------- CORS Setup -------------------
 // Define allowed origins for CORS (Cross-Origin Resource Sharing)
 const allowedOrigins = [
-  'http://localhost:3001',
-  'http://localhost:3000',
-  'http://localhost:3002',
+  "http://localhost:3001",
+  // ""
 ];
 
 // Apply CORS middleware with a custom configuration
