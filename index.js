@@ -28,20 +28,26 @@ const port = process.env.PORT || 3003;
 // Define allowed origins for CORS (Cross-Origin Resource Sharing)
 const allowedOrigins = [
   "http://localhost:3001",
-  // ""
+  "http://13.202.202.172:3003"
+  
 ];
 
 // Apply CORS middleware with a custom configuration
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // Allow requests with no origin (e.g., mobile apps, curl requests)
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin) return callback(null, true); // Allow requests with no origin (e.g., mobile apps, curl requests)
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true); // Allow requests from the allowed origins
-    } else {
-      callback(new Error('Not allowed by CORS')); // Block requests from other origins
-    }
-  }
+//     if (allowedOrigins.indexOf(origin) !== -1) {
+//       callback(null, true); // Allow requests from the allowed origins
+//     } else {
+//       callback(new Error('Not allowed by CORS')); // Block requests from other origins
+//     }
+//   }
+// }));
+
+app.use(cors({
+  origin: true, // This allows all origins
+  credentials: true // Optional: Allow credentials (cookies) to be sent with requests
 }));
 
 // Enable parsing of form data (for handling file uploads)
